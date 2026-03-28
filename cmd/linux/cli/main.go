@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"github.com/ilyas-gg/laba5VSRPP/internal/pkg/app/cli"
-	"github.com/ilyas-gg/laba5VSRPP/pkg/logger"
+	"github.com/ilyas-gg/weather-app/internal/pkg/app/cli"
+	"github.com/ilyas-gg/weather-app/pkg/logger"
 )
 
 func main() {
