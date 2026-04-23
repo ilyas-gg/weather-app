@@ -10,35 +10,32 @@ import (
 )
 
 func main() {
-r, err := os.Open("./config/config.yaml")
-if err != nil {
-panic(err)
+	r, err := os.Open("./config/config.yaml")
+	if err != nil {
+		panic(err)
+	}
+	c, err := config.Parse(r)
+	if err != nil {
+		panic(err)
+	}
+	l := logger.New(true) // true = debug mode
+	wi := getProvider(c, l)
+	app := cli.New(l, wi, c)
+	err = app.Run()
+	if err != nil {
+		l.Error(err.Error())
+		os.Exit(1)
+	}
+	os.Exit(0)
 }
-c, err := config.Parse(r)
-if err != nil {
-panic(err)
-}
-l := logger.New()
-wi := getProvider(c, l)
-app := cli.New(l, wi, c)
-err = app.Run()
-if err != nil {
-l.Error("Some error", err)
-os.Exit(1)
-}
-os.Exit(0)
-}
-func getProvider(c config.Config, l cli.Logger) cli.WeatherInfo {
-var wi cli.WeatherInfo
-switch c.P.Type {
-case "open-meteo":
-wi = weather.New(l)
-default:
-wi = weather.New(l)
-}
-return wi
-}
-r, err := os.Open("./config/config.yaml")
-if err != nil {
-panic(err)
+
+func getProvider(c config.Config, l *logger.StdLogger) cli.WeatherInfo {
+	var wi cli.WeatherInfo
+	switch c.P.Type {
+	case "open-meteo":
+		wi = weather.New(l)
+	default:
+		wi = weather.New(l)
+	}
+	return wi
 }

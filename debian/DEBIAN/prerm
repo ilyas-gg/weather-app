@@ -1,0 +1,7 @@
+#!/bin/bash
+set -e
+
+APP_NAME="weather-app"
+
+systemctl stop ${APP_NAME}.service 2>/dev/null || true
+systemctl disable ${APP_NAME}.service 2>/dev/null || true
