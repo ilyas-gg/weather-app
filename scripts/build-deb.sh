@@ -16,7 +16,7 @@ echo "Компиляция..."
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
     -ldflags="-s -w" \
     -o ${APP_NAME} \
-    ./cmd/linux/cli \  
+    ./cmd/linux/cli \
 
 if [ ! -f ${APP_NAME} ]; then
     echo "Ошибка компиляции! Проверь путь к main.go"
