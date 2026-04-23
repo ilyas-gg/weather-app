@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+APP_NAME="weather-app"
+APP_USER="weather-app"
+
+if [ "$1" = "purge" ]; then
+    userdel ${APP_USER} 2>/dev/null || true
+    rm -rf /var/lib/${APP_NAME}
+    rm -rf /etc/${APP_NAME}
+    rm -rf /var/log/${APP_NAME}
+fi
+
+systemctl daemon-reload

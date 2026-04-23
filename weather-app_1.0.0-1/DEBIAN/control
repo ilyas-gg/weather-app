@@ -1,0 +1,17 @@
+Package: weather-app
+Version: 1.0.0-1
+Section: utils
+Priority: optional
+Architecture: amd64
+Maintainer: Ilyas-gg  <ilyakoval2202@gmail.com>
+Depends: systemd
+Homepage: https://github.com/ilyas-gg/weather-app
+Description: Weather forecast application
+ Weather App is a CLI and web service for checking weather forecasts.
+ It supports multiple cities and provides detailed weather information.
+ .
+ Features:
+  - Current weather conditions
+  - 5-day forecast
+  - Multiple city support
+

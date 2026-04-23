@@ -18,24 +18,17 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	l := logger.New(true)   // исправлено: добавили bool
-	wi := getProvider(c, l) // wi может быть любого типа, который нужен app
-	app := cli.New(l)       // исправлено: только один аргумент
-
-	// Если app должен знать wi и c — добавьте их через методы
-	// Например (названия методов предположительные):
-	// app.SetWeatherInfo(wi)
-	// app.SetConfig(c)
-
+	l := logger.New(true) // или logger.New() если без аргументов, смотрите ваш логгер
+	_ = getProvider(c, l) // используем blank identifier, чтобы убрать warning (если wi не нужен)
+	app := cli.New(l)     // предполагаем, что New принимает только логгер
 	err = app.Run()
 	if err != nil {
-		l.Error(err) // исправлено: только ошибка
+		l.Error(err.Error()) // исправлено: передаём строку
 		os.Exit(1)
 	}
 	os.Exit(0)
 }
 
-// Временно убираем конкретный тип возврата, если cli.WeatherInfo не определён
 func getProvider(c config.Config, l cli.Logger) interface{} {
 	var wi interface{}
 	switch c.P.Type {

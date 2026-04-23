@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+APP_NAME="weather-app"
+APP_USER="weather-app"
+CONFIG_DIR="/etc/${APP_NAME}"
+DATA_DIR="/var/lib/${APP_NAME}"
+LOG_DIR="/var/log/${APP_NAME}"
+
+# Создаём пользователя
+if ! getent passwd ${APP_USER} > /dev/null; then
+    useradd --system --user-group \
+            --home ${DATA_DIR} \
+            --shell /usr/sbin/nologin \
+            ${APP_USER}
+fi
+
+# Создаём директории и устанавливаем права
+mkdir -p ${LOG_DIR}
+chown -R ${APP_USER}:${APP_USER} ${DATA_DIR}
+chown -R ${APP_USER}:${APP_USER} ${CONFIG_DIR}
+chown ${APP_USER}:${APP_USER} ${LOG_DIR}
+chmod 750 ${DATA_DIR} ${CONFIG_DIR} ${LOG_DIR}
+
+# Копируем конфиг если его нет
+if [ ! -f ${CONFIG_DIR}/config.yaml ]; then
+    cp ${CONFIG_DIR}/config.yaml.example ${CONFIG_DIR}/config.yaml
+    chown ${APP_USER}:${APP_USER} ${CONFIG_DIR}/config.yaml
+    chmod 640 ${CONFIG_DIR}/config.yaml
+fi
+
+# Запускаем сервис
+systemctl daemon-reload
+systemctl enable ${APP_NAME}.service
+systemctl start ${APP_NAME}.service
+
+echo "Weather App установлен и запущен"
